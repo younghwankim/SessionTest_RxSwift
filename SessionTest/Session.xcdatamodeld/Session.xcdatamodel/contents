@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CustomerMO" representedClassName="CustomerMO" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ProductMO" representedClassName="ProductMO" syncable="YES" codeGenerationType="class">
+        <attribute name="productName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CustomerMO" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="ProductMO" positionX="132.73828125" positionY="-13.4609375" width="128" height="58"/>
+    </elements>
+</model>
