@@ -114,9 +114,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R0F-Qa-Afl">
                                 <rect key="frame" x="255" y="15.5" width="51" height="30"/>
                                 <state key="normal" title="Update"/>
-                                <connections>
-                                    <action selector="updateButtonClicked:" destination="paa-vB-Qya" eventType="touchUpInside" id="hHL-rp-KPZ"/>
-                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vCJ-Lh-mCY">
                                 <rect key="frame" x="30" y="59" width="275" height="30"/>
@@ -127,9 +124,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FCv-uL-Aom">
                                 <rect key="frame" x="255" y="110.5" width="30" height="30"/>
                                 <state key="normal" title="Add"/>
-                                <connections>
-                                    <action selector="addButtonClicked:" destination="paa-vB-Qya" eventType="touchUpInside" id="U9Q-4e-vRm"/>
-                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="55i-Xn-uJA">
                                 <rect key="frame" x="30" y="156" width="275" height="30"/>
@@ -168,8 +162,10 @@
                         <viewLayoutGuide key="safeArea" id="5gz-Ub-WEw"/>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="FCv-uL-Aom" id="O9u-vb-e8i"/>
                         <outlet property="nameTextField" destination="vCJ-Lh-mCY" id="ZIL-CF-7Wh"/>
                         <outlet property="productTextField" destination="55i-Xn-uJA" id="fw1-NC-aAu"/>
+                        <outlet property="updateButton" destination="R0F-Qa-Afl" id="3U5-yI-7PE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAx-SC-30K" userLabel="First Responder" sceneMemberID="firstResponder"/>

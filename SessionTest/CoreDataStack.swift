@@ -18,21 +18,16 @@ open class CoreDataStack {
     }
     
     public lazy var mainContext: NSManagedObjectContext = {
-//        let pContext = self.storeContainer.viewContext
-//        let childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-//        childContext.parent = pContext
-//
-//        return childContext
-        return self.storeContainer.viewContext
-    }()
-    
-    public lazy var primaryContext: NSManagedObjectContext = {
         return self.storeContainer.viewContext
     }()
     
     public lazy var storeContainer: NSPersistentContainer = {
         
         let container = NSPersistentContainer(name: self.modelName)
+        
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { (_, error) in
             if let error = error as NSError? {
                 print("Could not fetch: \(error), \(error.userInfo)")

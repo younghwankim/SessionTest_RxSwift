@@ -27,6 +27,7 @@ class BusinessLogic {
         self.productNames.append("Toy Story")
     }
     
+    // Mimic REST API Call
     func fetchCustomer() -> Observable<(String, String)> {
         return Observable.create { observer in
             observer.onNext((self.name, self.phone))
@@ -35,7 +36,8 @@ class BusinessLogic {
         }
     }
     
-    func updateName(name: String) -> Observable<Bool> {
+    // Mimic REST API Call
+    private func updateName(name: String) -> Observable<Bool> {
         return Observable.create { observer in
             self.name = name
             observer.onNext(true)
@@ -69,6 +71,7 @@ class BusinessLogic {
         }
     }
     
+    // Mimic REST API Call
     func fetchProducts() -> Observable<[String]> {
         return Observable.create { observer in
             observer.onNext(self.productNames)
@@ -76,8 +79,8 @@ class BusinessLogic {
             return Disposables.create()
         }
     }
-    
-    func addProduct(name: String) -> Observable<Bool> {
+    // Mimic REST API Call
+    private func addProduct(name: String) -> Observable<Bool> {
         return Observable.create { observer in
             self.productNames.append(name)
             observer.onNext(true)

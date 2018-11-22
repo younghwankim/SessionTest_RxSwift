@@ -26,7 +26,7 @@ class TopViewModel: NSObject {
     override init() {
         super.init()
         
-        //binding first
+        //subscribe first
         session.customer.refreshObservable()
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] _ in

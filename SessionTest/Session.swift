@@ -51,7 +51,7 @@ extension ProductExtension where Base == Session {
 }
 
 
-class Session: CustomerExtensionCompatible, ProductExtensionCompatible {
+class Session {
     
     lazy var stack: CoreDataStack = CoreDataStack(modelName: "Session")
     let customerRefreshSubject = PublishSubject<Bool>()
@@ -64,25 +64,6 @@ class Session: CustomerExtensionCompatible, ProductExtensionCompatible {
     
     private init() {
     
-    }
-    
-    fileprivate func saveCustomer(name: String?, phone: String?) {
-        if name != nil && phone != nil {
-            self.deleteEntity(entity: "CustomerMO")
-            let customerMO = CustomerMO(context: self.stack.mainContext)
-            customerMO.name = name
-            customerMO.phoneNumber = phone
-        }
-    }
-    
-    fileprivate func saveProducts(names: [String]?) {
-        if let productNames = names {
-            self.deleteEntity(entity: "ProductMO")
-            productNames.forEach { productName in
-                let productMO = ProductMO(context: self.stack.mainContext)
-                productMO.productName = productName
-            }
-        }
     }
     
     private func deleteEntity(entity: String) {
@@ -98,26 +79,24 @@ class Session: CustomerExtensionCompatible, ProductExtensionCompatible {
             print("Could not fetch: \(error), \(error.userInfo)")
         }
     }
+}
+
+extension Session: ProductExtensionCompatible {
     
-    
-    fileprivate func fetchCustomer() -> (String?, String?) {
-        let fetchRequest: NSFetchRequest<CustomerMO> = CustomerMO.fetchRequest()
-        do {
-            let customers = try self.stack.primaryContext.fetch(fetchRequest)
-            if customers.count > 0, let customerMO = customers.first {
-                return (customerMO.name, customerMO.phoneNumber)
+    fileprivate func saveProducts(names: [String]?) {
+        if let productNames = names {
+            self.deleteEntity(entity: "ProductMO")
+            productNames.forEach { productName in
+                let productMO = ProductMO(context: self.stack.mainContext)
+                productMO.productName = productName
             }
-        } catch let error as NSError {
-            print("Could not fetch: \(error), \(error.userInfo)")
         }
-        self.refreshCustomer()
-        return (nil, nil)
     }
     
     fileprivate func fetchProducts() -> [String]? {
         let fetchRequest: NSFetchRequest<ProductMO> = ProductMO.fetchRequest()
         do {
-            let products = try self.stack.primaryContext.fetch(fetchRequest)
+            let products = try self.stack.mainContext.fetch(fetchRequest)
             if products.count > 0 {
                 return products.filter{ $0.productName != nil }.map{ $0.productName ?? "" }
             }
@@ -128,22 +107,47 @@ class Session: CustomerExtensionCompatible, ProductExtensionCompatible {
         return nil
     }
     
-    private func refreshCustomer() {
-        BusinessLogic.shared.fetchCustomer()
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] customer in
-                self.saveCustomer(name: customer.0, phone: customer.1)
-                self.customerRefreshSubject.onNext(true)
-            })
-            .disposed(by: self.disposeBag)
-    }
-    
     private func refreshProducts() {
         BusinessLogic.shared.fetchProducts()
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] products in
                 self.saveProducts(names: products)
                 self.productsRefreshSubject.onNext(true)
+            })
+            .disposed(by: self.disposeBag)
+    }
+}
+extension Session: CustomerExtensionCompatible {
+    
+    fileprivate func saveCustomer(name: String?, phone: String?) {
+        if name != nil && phone != nil {
+            self.deleteEntity(entity: "CustomerMO")
+            let customerMO = CustomerMO(context: self.stack.mainContext)
+            customerMO.name = name
+            customerMO.phoneNumber = phone
+        }
+    }
+    
+    fileprivate func fetchCustomer() -> (String?, String?) {
+        let fetchRequest: NSFetchRequest<CustomerMO> = CustomerMO.fetchRequest()
+        do {
+            let customers = try self.stack.mainContext.fetch(fetchRequest)
+            if customers.count > 0, let customerMO = customers.first {
+                return (customerMO.name, customerMO.phoneNumber)
+            }
+        } catch let error as NSError {
+            print("Could not fetch: \(error), \(error.userInfo)")
+        }
+        self.refreshCustomer()
+        return (nil, nil)
+    }
+    
+    private func refreshCustomer() {
+        BusinessLogic.shared.fetchCustomer()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] customer in
+                self.saveCustomer(name: customer.0, phone: customer.1)
+                self.customerRefreshSubject.onNext(true)
             })
             .disposed(by: self.disposeBag)
     }
